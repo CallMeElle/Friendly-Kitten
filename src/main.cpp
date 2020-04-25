@@ -26,7 +26,7 @@ int main(){
     redhand::engine_config conf = gameEngine->getConfig();
     
     //change the configuration and set the new config
-    conf.title = "Redhand Test Game";
+    conf.title = "Friendly Kitten";
     conf.RESIZABLE = true;
     gameEngine->setConfig(conf);
 

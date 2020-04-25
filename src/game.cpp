@@ -20,6 +20,14 @@ int main_game_logic(
     processGlobalInput(gameEngine);
     processWorldInput(gameEngine->getWindow(), gameEngine->getActiveWorld());
 
+    auto time = std::chrono::high_resolution_clock::now();
+    static decltype(time) last_pressed;
+
+    if(std::chrono::duration_cast<std::chrono::milliseconds>(time-last_pressed).count() > 100){
+        processKittenInput(gameEngine);
+        last_pressed = std::chrono::high_resolution_clock::now();
+    }
+
     //get the current window size
     int width, height;
     glfwGetWindowSize(gameEngine->getWindow(), &width, &height);
@@ -45,7 +53,15 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
         std::cerr << "Got nullpointer as shader" << std::endl;
         return -11;
     }
-    
+
+    auto kitten_location = "Textures/kitten.png";
+    std::string kitten_name = "kitten";
+    auto kitten = std::unique_ptr<redhand::texture2D> (new redhand::texture2D(kitten_location, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,kitten_name));
+    if(testWorld->addTexture(std::move(kitten)) < 0){
+        std::cerr << "Got error while adding texture" << std::endl;
+        return -12;
+    }
+
     //creating the objects and add them to the world
     int edges = 240;
 
@@ -55,7 +71,7 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
             {-100.0f, -100.0f},
             200.0f,
             200.0f,
-            {0.0f, 0.6f, 1.0f},
+            {1.0f, 0.0f, 0.0f},
             testWorld->getShaderByName("default"),
             nullptr,
             GL_STATIC_DRAW,
@@ -106,6 +122,44 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
         obj->setRotation((float)glfwGetTime()*20.0f);
     });
     
+    auto kitten_properties = redhand::DEFAULT_GAME_OBJECT_PROPERTIES;
+    kitten_properties.name = "cat";
+    kitten_properties.points_coordinates = {
+        {0.0f,0.0f},
+        {1.0f,0.0f},
+        {0.0f,1.0f},
+        {1.0f,1.0f}
+    };
+    kitten_properties.texture_coordinates = {
+        {0.0f,0.0f},
+        {1.0f,0.0f},
+        {0.0f,1.0f},
+        {1.0f,1.0f}
+    };
+    kitten_properties.point_colors = {
+        {0.0f,0.0f,0.0f},
+        {1.0f,0.0f,0.0f},
+        {0.0f,1.0f,0.0f},
+        {0.0f,0.0f,1.0f}
+    };
+    kitten_properties.triangle_indices = {
+        {0,1,2},
+        {1,2,3}
+    };
+    kitten_properties.attached_shader = testWorld->getShaderByName("default");
+    kitten_properties.attached_texture = testWorld->getTextureByName("kitten");
+    //kitten_properties.attached_texture = nullptr;
+    kitten_properties.scale = {0.7f,0.7f};
+    kitten_properties.postition = {-0.5f, -0.5f};
+    kitten_properties.texture_scale = {4.0f,4.0f};
+
+    if( testWorld->addObject(std::unique_ptr<redhand::game_object>(new redhand::game_object(kitten_properties))) < 0){
+        return -3;
+    }
+
+    auto cat = testWorld->getObjectByName("cat");
+    cat->setColorAlpha(1.0f);
+
     return 0;
 }
 
@@ -146,3 +200,15 @@ void processGlobalInput(redhand::engine* game){
 
 }
 
+void processKittenInput(redhand::engine* game) {
+    auto window = game->getWindow();
+
+    int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    if (state == GLFW_PRESS){
+        std::cout<<"Mouse key pressed\n";
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        std::cout<<"Cursor position x: "<< xpos <<"\n";
+        std::cout<<"Cursor position y: "<< ypos <<"\n";
+    }
+}

@@ -14,3 +14,4 @@ int main_game_logic(
 int createTestworld(std::shared_ptr<redhand::world> testWorld);
 void processWorldInput(GLFWwindow* window, std::shared_ptr<redhand::world> activeWorld);
 void processGlobalInput(redhand::engine* game);
+void processKittenInput(redhand::engine* game);
