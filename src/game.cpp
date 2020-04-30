@@ -54,9 +54,10 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
         return -11;
     }
 
-    auto kitten_location = "Textures/kitten.png";
-    std::string kitten_name = "kitten";
-    auto kitten = std::unique_ptr<redhand::texture2D> (new redhand::texture2D(kitten_location, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,kitten_name));
+    auto kitten_texture_properties = redhand::DEFAULT_IMAGE_PROPERTIES;
+    kitten_texture_properties.file_location = "Textures/kitten-1.png";
+    kitten_texture_properties.name = "kitten";
+    auto kitten = std::unique_ptr<redhand::texture2D> (new redhand::texture2D(kitten_texture_properties));
     if(testWorld->addTexture(std::move(kitten)) < 0){
         std::cerr << "Got error while adding texture" << std::endl;
         return -12;
@@ -76,7 +77,7 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
             nullptr,
             GL_STATIC_DRAW,
             "background",
-            1.25f
+            1.0f
         )
     ) < 0){
         return -3;
@@ -137,10 +138,10 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
         {1.0f,1.0f}
     };
     kitten_properties.point_colors = {
-        {0.0f,0.0f,0.0f},
-        {1.0f,0.0f,0.0f},
-        {0.0f,1.0f,0.0f},
-        {0.0f,0.0f,1.0f}
+        {1.0f,1.0f,1.0f},
+        {1.0f,1.0f,1.0f},
+        {1.0f,1.0f,1.0f},
+        {1.0f,1.0f,1.0f}
     };
     kitten_properties.triangle_indices = {
         {0,1,2},
@@ -151,14 +152,14 @@ int createTestworld(std::shared_ptr<redhand::world> testWorld){
     //kitten_properties.attached_texture = nullptr;
     kitten_properties.scale = {0.7f,0.7f};
     kitten_properties.postition = {-0.5f, -0.5f};
-    kitten_properties.texture_scale = {4.0f,4.0f};
+    kitten_properties.texture_scale = {1.0f,1.0f};
 
     if( testWorld->addObject(std::unique_ptr<redhand::game_object>(new redhand::game_object(kitten_properties))) < 0){
         return -3;
     }
 
     auto cat = testWorld->getObjectByName("cat");
-    cat->setColorAlpha(1.0f);
+    cat->setColorAlpha(0.0f);
 
     return 0;
 }

@@ -24,6 +24,9 @@ int main(){
 
     //get the current config of the engine
     redhand::engine_config conf = gameEngine->getConfig();
+
+    std::cout << conf.redhand_version << std::endl;
+    assert(conf.redhand_version == "0.0.10");
     
     //change the configuration and set the new config
     conf.title = "Friendly Kitten";
