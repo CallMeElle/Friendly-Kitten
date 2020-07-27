@@ -1,17 +1,21 @@
 #pragma once
 
-#include "redhand/engine.hpp"
-#include "redhand/world.hpp"
+#include <redhand/all.hpp>
 
-int game_init(
-    std::shared_ptr<redhand::world> startWorld
-);
+using namespace redhand;
 
-int main_game_logic(
-    redhand::engine* gameEngine
-);
+class kitten_world : public redhand::complex_world{
+    public:
+        int onCreate(event<engine> evt);
 
-int createTestworld(std::shared_ptr<redhand::world> testWorld);
-void processWorldInput(GLFWwindow* window, std::shared_ptr<redhand::world> activeWorld);
-void processGlobalInput(redhand::engine* game);
-void processKittenInput(redhand::engine* game);
+        void tick(game_loop_event evt);
+};
+
+class kitten : public redhand::Actor{
+    public:
+        kitten();
+
+        void act(game_loop_event evt);
+};
+
+int processGlobalInput(redhand::game_loop_event evt);
