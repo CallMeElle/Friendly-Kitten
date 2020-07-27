@@ -18,7 +18,7 @@ int kitten_world::onCreate(event<engine>){
             nullptr,
             STATIC_DRAW,
             "background",
-            1.25f
+            1.0f
         )
     ) < 0){
         return -3;
