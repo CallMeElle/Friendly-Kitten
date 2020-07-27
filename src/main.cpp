@@ -15,16 +15,17 @@
 //#include "audio/AudioHandler.hpp"
 #include "game.hpp"
 
+using namespace redhand;
 
 int main(){
     int exitCode = 0;
 
     //create the engine object
-    std::shared_ptr<redhand::engine> gameEngine(new redhand::engine());
+    auto gameEngine = std::make_shared<engine>();
 
     //get the current config of the engine
-    redhand::engine_config conf = gameEngine->getConfig();
-    
+    engine_config conf = gameEngine->getConfig();
+
     //change the configuration and set the new config
     conf.title = "Friendly Kitten";
     conf.RESIZABLE = true;

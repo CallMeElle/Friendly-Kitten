@@ -64,7 +64,8 @@ SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS
 add_executable(
     ${OUTPUT} 
     src/game.cpp
-    src/main.cpp)
+    src/main.cpp
+)
 
 #include glib and link libraries
 include_directories(${OUTPUT} ${GLIB_INCLUDE_DIRS})

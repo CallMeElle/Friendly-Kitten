@@ -9,7 +9,7 @@ int kitten_world::onCreate(event<engine>){
 
     // Background rectangle 
     if( this->addObject(
-        redhand::createRectangle(
+        createRectangle(
             {-100.0f, -100.0f},
             200.0f,
             200.0f,
@@ -26,7 +26,7 @@ int kitten_world::onCreate(event<engine>){
 
      // sun two
     if( this->addObject(
-        redhand::createCircle(
+        createCircle(
             {0.6f, 0.6f},
             0.6f,
             edges,
@@ -41,7 +41,7 @@ int kitten_world::onCreate(event<engine>){
     }
 
     // sun one
-    if( this->addObject(redhand::createCircle({0.8f,0.45f}, 0.35f, edges, {1.0f,1.0f,0.0f}, {1.0f,0.5f,0.0f}, nullptr, nullptr, "sun1")) < 0){
+    if( this->addObject(createCircle({0.8f,0.45f}, 0.35f, edges, {1.0f,1.0f,0.0f}, {1.0f,0.5f,0.0f}, nullptr, nullptr, "sun1")) < 0){
         return -3;
     }
 
@@ -50,21 +50,21 @@ int kitten_world::onCreate(event<engine>){
     return 0;
 }
 
-void kitten_world::tick(redhand::game_loop_event evt) {
+void kitten_world::tick(game_loop_event evt) {
     complex_world::tick(evt);
 
     //move the camera
     std::array<float,2> deltaCamera = {0.0f,0.0f};
 
-    if( redhand::input_system::static_isKeyPressed(redhand::KEY_D) ){
+    if( input_system::static_isKeyPressed(KEY_D) ){
         deltaCamera.at(0) = 0.02f;
-    }else if( redhand::input_system::static_isKeyPressed(redhand::KEY_A) ){
+    }else if( input_system::static_isKeyPressed(KEY_A) ){
         deltaCamera.at(0) = -0.02f;
     }
 
-    if( redhand::input_system::static_isKeyPressed(redhand::KEY_W) ){
+    if( input_system::static_isKeyPressed(KEY_W) ){
         deltaCamera.at(1) = 0.02f;
-    }else if( redhand::input_system::static_isKeyPressed(redhand::KEY_S) ){
+    }else if( input_system::static_isKeyPressed(KEY_S) ){
         deltaCamera.at(1) = -0.02f;
     }
 
@@ -75,11 +75,12 @@ void kitten_world::tick(redhand::game_loop_event evt) {
 
 kitten::kitten(){
 
-    redhand::image_properties prop;
+    image_properties prop;
     prop.file_location = "Textures/kitten.png";
     prop.wrap_S = GL_CLAMP_TO_EDGE;
     prop.wrap_T = GL_CLAMP_TO_EDGE;
     prop.name = "kitten";
+    prop.keep_image_data = true;
     setImage(new texture2D(prop));
     setPosition( {-0.5f, +0.5f});
     scaleActor(0.5f);
@@ -87,7 +88,7 @@ kitten::kitten(){
 
 }
 
-void kitten::act(redhand::game_loop_event evt){
+void kitten::act(game_loop_event evt){
     auto window = evt.getRaiser()->getWindow();
 
     int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
@@ -100,7 +101,7 @@ void kitten::act(redhand::game_loop_event evt){
     }
 }
 
-int processGlobalInput(redhand::game_loop_event evt){
+int processGlobalInput(game_loop_event evt){
     
     auto window = evt.getRaiser()->getWindow();
 
