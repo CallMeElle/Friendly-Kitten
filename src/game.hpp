@@ -18,4 +18,11 @@ class kitten : public Actor{
         void act(game_loop_event evt);
 };
 
+class seal : public Actor{
+    public:
+        seal();
+
+        void act(game_loop_event evt);
+};
+
 int processGlobalInput(game_loop_event evt);

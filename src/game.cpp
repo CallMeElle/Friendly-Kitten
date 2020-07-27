@@ -1,4 +1,6 @@
 #include "game.hpp"
+#include "redhand/input.hpp"
+#include <iostream>
 #include <redhand/types.hpp>
 
 using namespace redhand;
@@ -46,6 +48,7 @@ int kitten_world::onCreate(event<engine>){
     }
 
     this->add(new kitten());
+    this->add(new seal() );
 
     return 0;
 }
@@ -100,6 +103,41 @@ void kitten::act(game_loop_event evt){
         std::cout<<"Cursor position y: "<< ypos <<"\n";
     }
 }
+
+
+seal::seal(){
+
+    image_properties prop;
+    prop.file_location = "Textures/kitten.png";
+    prop.wrap_S = GL_CLAMP_TO_EDGE;
+    prop.wrap_T = GL_CLAMP_TO_EDGE;
+    prop.name = "seal";
+    prop.keep_image_data = true;
+    setImage(new texture2D(prop));
+    setPosition( {-0.5f, +0.5f});
+    scaleActor(0.5f);
+    setColorAlpha(1.0f);
+
+}
+
+void seal::act(game_loop_event evt){
+    if(input_system::static_isKeyPressed(KEY_UP)) {
+        move({0.0,0.01});
+    }
+    if(input_system::static_isKeyPressed(redhand::KEY_DOWN)) {
+        move({0.0,-0.01});
+    }
+    if(input_system::static_isKeyPressed(redhand::KEY_LEFT)) {
+        move({-0.01,0.0});
+    }
+    if(input_system::static_isKeyPressed(redhand::KEY_RIGHT)) {
+        move({0.01,0.0});
+    }
+    if(input_system::static_isKeyPressed(redhand::KEY_T)) {
+        std::cout<< "You don't undertstand this game? I don't either.."<< std::endl;
+    }
+}
+
 
 int processGlobalInput(game_loop_event evt){
     

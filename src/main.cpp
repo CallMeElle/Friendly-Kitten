@@ -1,18 +1,10 @@
 #include <iostream>
-//#include <iterator>
-//#include <chrono>
-//#include <thread>
 #include <cmath>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "redhand/game_object.hpp"
-#include "redhand/shader.hpp"
-#include "redhand/texture.hpp"
-#include "redhand/complex_world.hpp"
-#include "redhand/engine.hpp"
-//#include "audio/AudioHandler.hpp"
+#include "redhand/all.hpp"
 #include "game.hpp"
 
 using namespace redhand;
