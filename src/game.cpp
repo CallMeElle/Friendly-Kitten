@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "redhand/input.hpp"
 #include <iostream>
+#include <memory>
 #include <redhand/types.hpp>
 
 using namespace redhand;
@@ -47,8 +48,8 @@ int kitten_world::onCreate(event<engine>){
         return -3;
     }
 
-    this->add(new kitten());
-    this->add(new seal() );
+    this->add(std::make_shared<kitten>() );
+    this->add(std::make_shared<seal>());
 
     return 0;
 }
@@ -78,13 +79,15 @@ void kitten_world::tick(game_loop_event evt) {
 
 kitten::kitten(){
 
+    setName("kitten");
+
     image_properties prop;
     prop.file_location = "Textures/kitten.png";
     prop.wrap_S = GL_CLAMP_TO_EDGE;
     prop.wrap_T = GL_CLAMP_TO_EDGE;
     prop.name = "kitten";
     prop.keep_image_data = true;
-    setImage(new texture2D(prop));
+    setImage(prop);
     setPosition( {-0.5f, +0.5f});
     scaleActor(0.5f);
     setColorAlpha(1.0f);
@@ -107,13 +110,15 @@ void kitten::act(game_loop_event evt){
 
 seal::seal(){
 
+    setName("seal");
+
     image_properties prop;
     prop.file_location = "Textures/kitten.png";
     prop.wrap_S = GL_CLAMP_TO_EDGE;
     prop.wrap_T = GL_CLAMP_TO_EDGE;
     prop.name = "seal";
     prop.keep_image_data = true;
-    setImage(new texture2D(prop));
+    setImage(prop);
     setPosition( {-0.5f, +0.5f});
     scaleActor(0.5f);
     setColorAlpha(1.0f);
@@ -136,6 +141,50 @@ void seal::act(game_loop_event evt){
     if(input_system::static_isKeyPressed(redhand::KEY_T)) {
         std::cout<< "You don't undertstand this game? I don't either.."<< std::endl;
     }
+
+    auto kit = evt.getRaiser()->getActiveWorld()->get("kitten");
+
+    if (kit != nullptr){
+
+        auto size = getSize();
+        auto pos = getPosition();
+
+        auto pos_k = kit->getPosition();
+        auto size_k = kit->getSize();
+
+        auto topRight = pos+size;
+        auto topRight_k = pos_k+size_k;
+
+        bool debug = true;
+        bool collision = false;
+
+        bool overlap_x = false;
+        bool overlap_y = false;
+
+        if (pos.x < pos_k.x  || pos.x < topRight_k.x) {
+            if (pos_k.x < topRight.x || topRight_k.x < topRight.x) {
+                overlap_x = true;
+            }
+        }
+
+        if (pos.y < pos_k.y || pos.y < topRight_k.y) {
+            if (pos_k.y < topRight.y || topRight_k.y < topRight.y) {
+                overlap_y = true;
+            }
+        }
+
+        collision = overlap_x && overlap_y;
+
+        if(debug){
+            if(collision){
+                std::cout<<"Collision between seal and cat"<<std::endl;
+            }else{
+                std::cout<<"No collision"<<std::endl;
+            }
+        }
+
+    }
+        
 }
 
 

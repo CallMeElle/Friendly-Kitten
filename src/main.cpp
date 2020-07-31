@@ -9,11 +9,15 @@
 
 using namespace redhand;
 
-int main(){
+int main(int argc, char **argv){
     int exitCode = 0;
+    if (argc == 0){
+        return 100;
+    }
 
     //create the engine object
-    auto gameEngine = std::make_shared<engine>();
+    auto gameEngine = std::make_shared<redhand::engine>(argv[0]);
+
 
     //get the current config of the engine
     engine_config conf = gameEngine->getConfig();
